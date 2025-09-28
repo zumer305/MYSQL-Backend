@@ -148,7 +148,29 @@ app.get("/user/:id/edit",(req,res)=>{
 
 // npm install method-override 
 app.patch("/user/:id",(req,res)=>{
-    res.send("updated");
+     let{id}=req.params;
+     let{password:formPass,username:newUser}=req.body;//database sa
+    let q=`select * from user where id="${id}"`; 
+          connection.query(q, (err, result) => {
+        if (err) {
+            console.log("Database Error: ", err);
+            return res.send('some error in database'); // stop further execution
+        }
+
+    let user=result[0];
+    if(formPass!=user.password)
+    res.send("wrong password");
+    else{
+        let q2=`update user set username="${newUser}" where id="${id}"` ;
+        connection.query(q2,(err,result)=>{
+            if(err) throw err;
+            res.redirect("/user");//direct us page pr
+        })
+    }
+       
+    });
+    
+
 })
 
 
