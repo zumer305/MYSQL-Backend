@@ -4,13 +4,13 @@
 // npm i @faker-js/faker
 const { faker } = require('@faker-js/faker');
 let  getRandomUser=()=> {
-  return {
-    Id: faker.string.uuid(),
-    username: faker.internet.username(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
- 
-  };
+  return [
+     faker.string.uuid(),
+     faker.internet.username(),
+     faker.internet.email(),
+     faker.internet.password(),
+  ];
+  
 }
 // console.log(getRandomUser());
 
@@ -37,9 +37,13 @@ const connection = mysql.createConnection({ //starting connection
   password:'zumer2004',
 });
 let q='insert into user(id,username,email,password) values ?';
-let user=[['3','zumerr','zumerr@gmail.com','12345'],['2','ali','ali@gmail.com','123456']];
+let data=[];
+for(let i=1;i<=100;i++){
+    data.push(getRandomUser());
+}
+// let user=[['3','zumerr','zumerr@gmail.com','12345'],['2','ali','ali@gmail.com','123456']];
 try{
-    connection.query(q,[user],(err,result)=>{  //pacakgeinstall baki yah the (workbench,cli,sqlfiles)
+    connection.query(q,[data],(err,result)=>{  //pacakgeinstall baki yah the (workbench,cli,sqlfiles)
 if(err) throw err;
 console.log(result);
 // console.log(result.length);
@@ -70,5 +74,14 @@ connection.end(); //ending
 
 
 // source schema.sql; 
+
+
+
+// getRandomUser,patch(update username)
+
+
+
+
+
 
 
