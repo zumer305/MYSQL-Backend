@@ -80,6 +80,7 @@ const connection = mysql.createConnection({ //starting connection
 // getRandomUser,patch(update username)
 // npm i express 
 // npm i uuid (for new data add)
+// HOME PAGE 
 const express=require('express');
 const app=express();
 app.listen(8080,()=>{
@@ -107,6 +108,24 @@ app.get('/', (req, res) => {
 const path=require('path');
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
+
+
+
+// user page 
+app.get('/user',(req,res)=>{
+    let q='Select * from user';
+        connection.query(q, (err, result) => {
+        if (err) {
+            console.log("Database Error: ", err);
+            return res.send('some error in database'); // stop further execution
+        }
+
+     
+        res.render("user.ejs",{result});
+    });
+
+   
+})
 
 
 
