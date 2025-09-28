@@ -102,7 +102,9 @@ app.get('/', (req, res) => {
 
 
 
-
+const methodOverride=require("method-override");
+app.use(methodOverride("_method"));
+app.use(express.urlencoded({extended:true}));
 
 // npm i ejs 
 const path=require('path');
@@ -125,6 +127,28 @@ app.get('/user',(req,res)=>{
     });
 
    
+})
+
+
+// edit route 
+app.get("/user/:id/edit",(req,res)=>{
+    let{id}=req.params;
+    let q=`select * from user where id="${id}"`;
+          connection.query(q, (err, result) => {
+        if (err) {
+            console.log("Database Error: ", err);
+            return res.send('some error in database'); // stop further execution
+        }
+
+    let user=result[0];
+        res.render("edit.ejs",{user});
+    });
+    
+})
+
+// npm install method-override 
+app.patch("/user/:id",(req,res)=>{
+    res.send("updated");
 })
 
 
